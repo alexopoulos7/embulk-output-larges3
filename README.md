@@ -44,14 +44,16 @@ cf. http://docs.aws.amazon.com/AWSJavaSDK/latest/javadoc/com/amazonaws/services/
 ## Example
 
 ```yaml
-path_prefix: logs/out
-file_ext: .csv
-bucket: my-s3-bucket
-endpoint: s3-us-west-1.amazonaws.com
-access_key_id: ABCXYZ123ABCXYZ123
-secret_access_key: AbCxYz123aBcXyZ123
-formatter:
-  type: csv
+out:
+  type: larges3
+  path_prefix: logs/out
+  file_ext: .csv
+  bucket: my-s3-bucket
+  endpoint: s3-us-west-1.amazonaws.com
+  access_key_id: ABCXYZ123ABCXYZ123
+  secret_access_key: AbCxYz123aBcXyZ123
+  formatter:
+    type: csv
 ```
 
 
