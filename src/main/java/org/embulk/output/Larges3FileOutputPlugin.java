@@ -10,6 +10,7 @@ import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.lang.Long;
 
 import org.embulk.config.Config;
 import org.embulk.config.ConfigDefault;
@@ -89,6 +90,10 @@ public class Larges3FileOutputPlugin
         @Config("canned_acl")
         @ConfigDefault("null")
         Optional<CannedAccessControlList> getCannedAccessControlList();
+
+        @Config("part_size")
+        @ConfigDefault("52428800")
+        Optional<String> getPartSize();
     }
 
     public static class S3FileOutput
@@ -102,6 +107,7 @@ public class Larges3FileOutputPlugin
         private final String sequenceFormat;
         private final String fileNameExtension;
         private final String tempPathPrefix;
+        private final String partSize;
         private final Optional<CannedAccessControlList> cannedAccessControlListOptional;
 
         private int taskIndex;
@@ -153,6 +159,7 @@ public class Larges3FileOutputPlugin
             this.sequenceFormat = task.getSequenceFormat();
             this.fileNameExtension = task.getFileNameExtension();
             this.tempPathPrefix = task.getTempPathPrefix();
+            this.partSize = task.getPartSize().get();
             if (task.getTempPath().isPresent()) {
                 this.tempPath = task.getTempPath().get();
             }
@@ -201,13 +208,13 @@ public class Larges3FileOutputPlugin
 
             File file = new File(from.toString());
             long contentLength = file.length();
-            long partSize = 52428800; // Set part size to 50 MB.
-
+            long partSize = Long.parseLong(this.partSize); // Set part size to 50 MB.
+            log.info("Splitting into {} Byte size parts", partSize);
             try {
                 // Step 2: Upload parts.
                 long filePosition = 0;
                 for (int i = 1; filePosition < contentLength; i++) {
-                    // Last part can be less than 5 MB. Adjust part size.
+                    // Last part can be less than 50 MB. Adjust part size.
                     partSize = Math.min(partSize, (contentLength - filePosition));
 
                     // Create request to upload a part.

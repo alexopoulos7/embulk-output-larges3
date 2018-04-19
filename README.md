@@ -26,6 +26,7 @@ This plugin is an extension of classic s3 output plugin. [https://github.com/lli
 - **canned_acl**: canned access control list for created objects ([enum](#cannedaccesscontrollist), default: null)
 - **proxy_host**: proxy host to use when accessing AWS S3 via proxy. (string, default: null )
 - **proxy_port**: proxy port to use when accessing AWS S3 via proxy. (string, default: null )
+- **part_size**: Size in Bytes of each part for multipart upload to S3, defaults to 50 MB (int, default: 52428800 )
 
 ### CannedAccessControlList
 you can choose one of the below list.
