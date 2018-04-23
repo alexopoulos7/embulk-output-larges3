@@ -12,6 +12,10 @@ This plugin is an extension of classic s3 output plugin. [https://github.com/lli
 * **Resume supported**: no
 * **Cleanup supported**: yes
 
+## Install
+```
+embulk gem install embulk-output-larges3
+```
 ## Configuration
 
 - **path_prefix**: prefix of target keys (string, required)
